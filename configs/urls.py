@@ -17,9 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from cars.views import CarsView
+from cars.views import CarListCreateView, CarGetUpdateDeleteView
 
 urlpatterns = [
     path('admin', admin.site.urls),
-    path('cars', CarsView.as_view(), name='cars_test'),
+    path('cars', CarListCreateView.as_view()),
+    path('cars/<int:pk>', CarGetUpdateDeleteView.as_view())
 ]
