@@ -1,14 +1,13 @@
-from rest_framework.exceptions import ValidationError
-from rest_framework.generics import GenericAPIView, get_object_or_404, ListCreateAPIView
-from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, CreateModelMixin, UpdateModelMixin
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.exceptions import ValidationError
+from rest_framework.generics import GenericAPIView, ListCreateAPIView, get_object_or_404
+from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin, UpdateModelMixin
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from .models import CarModel
-from .serializers import CarSerializer, CarForReturnSerializer
 from .filters import cars_filter
-
+from .models import CarModel
+from .serializers import CarForReturnSerializer, CarSerializer
 
 # class CarListCreateView(GenericAPIView, CreateModelMixin, ListModelMixin):
 #     queryset = CarModel.objects.all()
