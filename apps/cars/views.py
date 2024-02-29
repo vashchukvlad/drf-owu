@@ -1,31 +1,16 @@
 from rest_framework import status
-from rest_framework.exceptions import ValidationError
-from rest_framework.generics import GenericAPIView, ListCreateAPIView, get_object_or_404
-from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin, UpdateModelMixin
+from rest_framework.generics import GenericAPIView, ListCreateAPIView
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
-from .filters import cars_filter
+from .filters import CarFilter
 from .models import CarModel
-from .serializers import CarForReturnSerializer, CarSerializer
+from .serializers import CarSerializer
 
-# class CarListCreateView(GenericAPIView, CreateModelMixin, ListModelMixin):
-#     queryset = CarModel.objects.all()
-#     serializer_class = CarSerializer
-#
-#     def get(self, *args, **kwargs):
-#         return super().list(self, *args, **kwargs)
-#
-#     def post(self, *args, **kwargs):
-#         return super().create(self, *args, **kwargs)
 
 class CarListCreateView(ListCreateAPIView):
     queryset = CarModel.objects.all()
     serializer_class = CarSerializer
-
-    def get_queryset(self):
-        query_params = self.request.query_params
-        return cars_filter(query_params)
+    filterset_class = CarFilter
 
 
 # class CarListCreateView(GenericAPIView):

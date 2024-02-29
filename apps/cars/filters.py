@@ -1,30 +1,14 @@
-from django.db.models import QuerySet
-from django.http import QueryDict
-from rest_framework.exceptions import ValidationError
-
-from apps.cars.models import CarModel
-from apps.cars.serializers import CarSerializer
+from django_filters import rest_framework as filters
 
 
-def cars_filter(query_params: QueryDict) -> QuerySet:
-    qs = CarModel.objects.all()
-
-    for k, v in query_params.items():
-        match k:
-            case 'price__gt':
-                qs = qs.filter(price__gt=v)
-            case 'price__lt':
-                qs = qs.filter(price__lt=v)
-            case 'brand':
-                qs = qs.filter(brand__exact=v)
-            case 'order':
-                fields = CarSerializer.Meta.fields
-                fields = [*fields, *[f'-{f}' for f in fields]]
-                print(fields)
-                if v not in fields:
-                    raise ValidationError({'details': f'{v} is not a valid order value'})
-
-                qs = qs.order_by(v)
-            case _:
-                raise ValidationError({'details': 'Invalid filter parameter'})
-    return qs
+class CarFilter(filters.FilterSet):
+    year_gt = filters.NumberFilter('year', 'gt')
+    year_lt = filters.NumberFilter('year', 'lt')
+    brand = filters.CharFilter(lookup_expr='icontains')
+    order = filters.OrderingFilter(
+        fields=(
+            'id',
+            ('brand', 'marka'),
+            'year'
+        )
+    )
